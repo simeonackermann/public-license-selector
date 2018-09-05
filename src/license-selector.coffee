@@ -550,7 +550,7 @@ class LicenseList
     return (''+obj).toLowerCase().indexOf(text) > -1
 
   constructor: (@parent, @licenseSelector) ->
-    @availableLicenses = _.where @licenseSelector.licenses, { available: true }
+    @availableLicenses = _.filter @licenseSelector.licenses, { available: true }
     @list = $('<ul />')
     @error = $('<div/>').addClass('ls-not-found').append($('<h4/>').text('No license found')).append('Try change the search criteria or start the questionnaire again.')
     @error.hide()
@@ -653,7 +653,7 @@ class LicenseList
     unless licenses?
       licenses = @availableLicenses
     else
-      licenses = @availableLicenses = _.where licenses, { available: true }
+      licenses = @availableLicenses = _.filter licenses, { available: true }
 
     elements = {}
     for el in @list.children()
@@ -684,23 +684,23 @@ class LicenseList
     return
 
   has: (category) ->
-    _.any @availableLicenses, (license) ->
-      _.contains(license.categories, category)
+    _.some @availableLicenses, (license) ->
+      _.includes(license.categories, category)
 
   only: (category) ->
-    _.all @availableLicenses, (license) ->
-      _.contains(license.categories, category)
+    _.every @availableLicenses, (license) ->
+      _.includes(license.categories, category)
 
   hasnt: (category) ->
-    _.all @availableLicenses, (license) ->
-      !_.contains(license.categories, category)
+    _.every @availableLicenses, (license) ->
+      !_.includes(license.categories, category)
 
   include: (category) ->
-    @availableLicenses = _.filter @availableLicenses, (license) -> _.contains(license.categories, category)
+    @availableLicenses = _.filter @availableLicenses, (license) -> _.includes(license.categories, category)
     @update()
 
   exclude: (category) ->
-    @availableLicenses = _.filter @availableLicenses, (license) -> !_.contains(license.categories, category)
+    @availableLicenses = _.filter @availableLicenses, (license) -> !_.includes(license.categories, category)
     @update()
 
 class LicenseSelector

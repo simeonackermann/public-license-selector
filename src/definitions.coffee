@@ -371,7 +371,7 @@ QuestionDefinitions =
       return unless option?
       option.action()
     disabledCheck = (state) ->
-      !_.any state.options, (option) -> option.selected
+      !_.some state.options, (option) -> option.selected
     @answer 'Next', nextAction, disabledCheck
 
   # Software
@@ -417,7 +417,7 @@ QuestionDefinitions =
       else
         @license()
       return
-    @answer 'Next', nextAction, (state) -> !_.any state.options, (option) -> option.selected
+    @answer 'Next', nextAction, (state) -> !_.some state.options, (option) -> option.selected
 
   Copyleft: ->
     @question 'Do you require others who modify your code to release it under a compatible licence?'
